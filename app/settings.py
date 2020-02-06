@@ -25,7 +25,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party installed apps
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    # end of the third party apps
     # custom installed apps
     'post.apps.PostConfig',
     'comment.apps.CommentConfig',
