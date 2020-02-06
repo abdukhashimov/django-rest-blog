@@ -31,6 +31,8 @@ class Post(models.Model):
     thumbnail = models.ImageField(upload_to='thumbnails')
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     content = models.TextField()
+    tag = models.ManyToManyField(Tag)
+    category = models.ManyToManyField(Category)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
