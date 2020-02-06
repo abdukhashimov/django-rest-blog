@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     # custom installed apps
     'post.apps.PostConfig',
     'comment.apps.CommentConfig',
+    'analytics.apps.AnalyticsConfig',
 ]
 
 MIDDLEWARE = [
