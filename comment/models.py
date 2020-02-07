@@ -28,3 +28,6 @@ class Comment(models.Model):
         if self.parent is None:
             return "{}'s comment".format(str(self.author))
         return "{}'s reply".format(str(self.author))
+
+    def get_child_comments(self):
+        return self.objects.filter(parent_id__isnull=False)
