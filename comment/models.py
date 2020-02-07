@@ -3,6 +3,17 @@ from django.contrib.auth import get_user_model
 from post.models import Post
 
 
+class CommentManager(models.Manager):
+    def get_parent_comment(self):
+        return super(
+            CommentManager, self).get_queryset().filter(parent__isnull=True)
+
+    def get_child_comment(self):
+        return super(
+            CommentManager,
+            self).get_queryset().filter(parent_id__isnull=False)
+
+
 class Comment(models.Model):
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     comment = models.TextField()
@@ -10,6 +21,8 @@ class Comment(models.Model):
     parent = models.ForeignKey(
         'self', related_name='reply', null=True, blank=True,
         on_delete=models.CASCADE)
+
+    objects = CommentManager()
 
     def __str__(self):
         if self.parent is None:
