@@ -10,9 +10,11 @@ class CommentManager(models.Manager):
             CommentManager, self).get_queryset().filter(parent__isnull=True)
 
     def get_child_comment(self):
+        parents = Comment.objects.get(id=1).reply.all()
         collector = NestedObjects(using='default')
-        collector.collect(Comment.objects.get(id=1))
+        collector.collect(parents)
         print(collector.data[parents[0].__class__])
+        return collector.data[parents[0].__class__]
 
 
 class Comment(models.Model):
