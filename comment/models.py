@@ -10,7 +10,7 @@ class CommentManager(models.Manager):
             CommentManager, self).get_queryset().filter(parent__isnull=True)
 
     def get_child_comment(self):
-        parents = Comment.objects.get(id=1).reply.all()
+        parents = Comment.objects.filter(id=1)
         collector = NestedObjects(using='default')
         collector.collect(parents)
         print(collector.data[parents[0].__class__])
