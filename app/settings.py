@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     # third party installed apps
     'rest_framework',
     'rest_framework.authtoken',
+    'django_rest_passwordreset',
     'rest_auth',
     # end of the third party apps
     # custom installed apps
