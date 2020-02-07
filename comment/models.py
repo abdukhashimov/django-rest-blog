@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models import Q
+from django.contrib.admin.utils import NestedObjects
 
 
 class CommentManager(models.Manager):
@@ -8,9 +10,9 @@ class CommentManager(models.Manager):
             CommentManager, self).get_queryset().filter(parent__isnull=True)
 
     def get_child_comment(self):
-        return super(
-            CommentManager,
-            self).get_queryset().filter(parent_id__isnull=False)
+        collector = NestedObjects(using='default')
+        collector.collect(Comment.objects.get(id=1))
+        print(collector.data[parents[0].__class__])
 
 
 class Comment(models.Model):
@@ -28,5 +30,5 @@ class Comment(models.Model):
             return "{}'s comment".format(str(self.author))
         return "{}'s reply".format(str(self.author))
 
-    def get_child_comments(self):
-        return self.objects.filter(parent_id__isnull=False)
+    # def get_child_comments(self, id):
+        # return Comment.objects.filter(Q(parent_id=id))
