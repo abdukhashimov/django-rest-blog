@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from comment.models import Comment
 
 
 class Category(models.Model):
@@ -31,6 +32,7 @@ class Post(models.Model):
     thumbnail = models.ImageField(upload_to='thumbnails')
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     content = models.TextField()
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     tag = models.ManyToManyField(Tag)
     category = models.ManyToManyField(Category)
     timestamp = models.DateTimeField(auto_now_add=True)
