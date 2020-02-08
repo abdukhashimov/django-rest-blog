@@ -5,15 +5,15 @@ from django.contrib.admin.utils import NestedObjects
 
 
 class CommentManager(models.Manager):
-    def get_parent_comment(self):
+    def get_parent_comment(self, id):
         return super(
-            CommentManager, self).get_queryset().filter(parent__isnull=True)
+            CommentManager, self).get_queryset().filter(id=id, parent_id__isnull=True)
 
-    def get_child_comment(self):
-        parents = Comment.objects.filter(id=1)
+    def get_child_comment(self, id):
+        parents = Comment.objects.filter(id=id)
         collector = NestedObjects(using='default')
         collector.collect(parents)
-        print(collector.data[parents[0].__class__])
+        collector.data[parents[0].__class__].remove(parents[0])
         return collector.data[parents[0].__class__]
 
 
@@ -32,5 +32,10 @@ class Comment(models.Model):
             return "{}'s comment".format(str(self.author))
         return "{}'s reply".format(str(self.author))
 
-    # def get_child_comments(self, id):
-        # return Comment.objects.filter(Q(parent_id=id))
+    @property
+    def get_parent(self):
+        return Comment.objects.get_parent_comment(self.id)
+
+    @property
+    def child_comments(self):
+        return Comment.objects.get_child_comment(self.id)
