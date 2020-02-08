@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from post.models import Post
+from comment.serializers import CommentSerializer
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -17,7 +18,4 @@ class PostSerializer(serializers.ModelSerializer):
         return [str(obj.author), obj.author.profile_picture.url]
 
     def get_comment(self, obj):
-        return {
-            'comment': obj.comment.comment,
-            'replies': obj.comment.objects.get_child_comment()
-        }
+        return CommentSerializer(obj.comment).data
